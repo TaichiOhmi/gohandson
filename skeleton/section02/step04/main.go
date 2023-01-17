@@ -16,8 +16,8 @@ func main() {
 	fmt.Println("3: falseと表示される")
 	fmt.Println("4: パニックが起きる")
 
-// TODO: 繰り返しにLOOPというラベルをつける
-
+	// TODO: 繰り返しにLOOPというラベルをつける
+LOOP:
 	for count := 1; count <= 2; count++ {
 		var answer int
 		for {
@@ -33,7 +33,7 @@ func main() {
 		case answer == 2:
 			fmt.Println("正解!")
 			// TODO: ラベルLOOPのついた繰り返しを抜け出す
-
+			break LOOP
 		case count == 1:
 			fmt.Println("不正解!")
 			fmt.Println("もう一度チャレンジ!")
