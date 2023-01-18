@@ -6,6 +6,7 @@ func start(converters []converter) {
 	for {
 		// TODO: 単位変換器を選ぶ
 		// 変数noに選ばれた変換器の添字、変数okには継続するかどうか
+		no, ok := inputConverterNo(converters)
 
 		if !ok {
 			return
@@ -21,7 +22,7 @@ func start(converters []converter) {
 // 単位変換器を選ぶ関数
 // 引数: converters（単位変換器）
 // 戻り値：選んだ変換器の添字と処理を継続するかどうか
-func inputConverterNo(converters []converter) /* TODO: 戻り値 */ {
+func inputConverterNo(converters []converter) (int, bool) /* TODO: 戻り値 */ {
 	fmt.Println("以下の単位変換器から選んでください。")
 	for i, c := range converters {
 		fmt.Printf("%d: %s\n", i+1, c.name)
@@ -37,7 +38,7 @@ func inputConverterNo(converters []converter) /* TODO: 戻り値 */ {
 	// 終了する
 	if no == len(converters)+1 {
 		// TODO: 終了する場合は0とfalseを返す
-
+		return 0, false
 	}
 
 	return no - 1, true

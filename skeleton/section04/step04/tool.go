@@ -17,10 +17,10 @@ func (m *memory) String() string {
 type tool struct {
 	converters []*converter
 	// TODO: 履歴を記録するためのフィールド
-
+	memories []*memory
 }
 
-func /* TODO: レシーバ */ start() {
+func (t *tool) /* TODO: レシーバ */ start() {
 	for {
 
 		t.printMemories()
@@ -34,11 +34,16 @@ func /* TODO: レシーバ */ start() {
 		from := t.inputValue(c)
 		to := c.convert(from)
 		// TODO: 履歴を変数mに代入
+		m := &memory{
+			converter: c,
+			from:      from,
+			to:        to,
+		}
 
-		
 		t.memories = append(t.memories, m)
-		// TODO: 結果を表示する
 
+		// TODO: 結果を表示する
+		fmt.Println(m.String())
 
 		fmt.Println()
 	}
