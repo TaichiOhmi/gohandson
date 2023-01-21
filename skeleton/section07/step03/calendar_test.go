@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/go-cmp/cmp"
 	eventcal "github.com/gohandson/toybox-ja/skeleton/section07/step03"
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestCalendar_Recent(t *testing.T) {
@@ -25,7 +25,7 @@ func TestCalendar_Recent(t *testing.T) {
 		{"noevents", "2021/11/18 10:00", "", "", 1, nil},
 		{"recent 1day", "2021/11/18 10:00", "2021/11/18 10:00, 2021/11/19 10:00", "1h, 1h", 1, []int{0}},
 		// TODO: 最近2日間のイベントを取得するテストケースを書く
-
+		{"recent 2days", "2021/11/18 10:00", "2021/11/18 10:00, 2021/11/19 10:00", "1h, 1h", 2, []int{0, 1}},
 		{"past events", "2021/11/18 10:00", "2021/11/18 09:00, 2021/11/18 10:00, 2021/11/19 10:00", "1h, 1h, 1h", 1, []int{1}},
 	}
 
@@ -88,6 +88,10 @@ func TestCalendar_Recent(t *testing.T) {
 // ヒント: date関数を使う
 func fakeClock(t *testing.T, tmstr string) eventcal.Clock {
 	// TODO: 実装を書く
+	t.Helper()
+	return eventcal.ClockFunc(func() time.Time {
+		return date(t, tmstr)
+	})
 }
 
 func dates(t *testing.T, tmstr ...string) []time.Time {
@@ -105,7 +109,7 @@ func date(t *testing.T, tmstr string) time.Time {
 	tm, err := time.Parse("2006/01/02 15:04", strings.TrimSpace(tmstr))
 	if err != nil {
 		// TODO: エラーが発生した場合はt.Fatalメソッドで"予想外のエラー:"とerrを出力してテストを終了する
-
+		t.Fatal("予想外のエラー:", err)
 	}
 
 	return tm
