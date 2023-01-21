@@ -31,7 +31,9 @@ func (err *ValidationError) Error() string {
 }
 
 // TODO: Unwrapメソッド実装。Errフィールドの値を返す
-
+func (err *ValidationError) UnWrap() error {
+	return err.Err
+}
 
 // バリデーションルールを表すインタフェース
 type Rule interface {
@@ -77,7 +79,7 @@ func (r *maxSizeRule) Validate(img image.Image, _ string) error {
 		err = multierr.Append(err, &ValidationError{
 			Rule: r,
 			// TODO: エラーをラップしてErrフィールドに設定する。高さの実装を参考にする。
-
+			Err: fmt.Errorf("期待する幅%d 実際%d: %w", *r.width, bounds.Dx(), ErrTooLarge),
 		})
 
 	}
@@ -100,7 +102,7 @@ func Validate(r io.Reader, rules ...Rule) error {
 	// 画像を読み込む
 	img, format, err := image.Decode(r)
 	switch {
-	case /* errがimage.ErrFormatかどうかerrors.Is関数で判定する */:
+	case errors.Is(err, image.ErrFormat) /* errがimage.ErrFormatかどうかerrors.Is関数で判定する */ :
 		// 画像として読み込めなかった
 		return nil
 	case err != nil:
@@ -141,7 +143,7 @@ func ValidateDir(root string, rules ...Rule) error {
 		// バリデーションをかける
 		if err := Validate(file, rules...); err != nil {
 			// TODO: ファイルパスをつけてエラーをラップして返す
-
+			fmt.Errorf("%s: %w", path, err)
 		}
 		return nil
 	}
