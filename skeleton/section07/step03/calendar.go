@@ -15,6 +15,7 @@ type Event struct {
 // Calendarはイベントカレンダーを表す
 type Calendar struct {
 	// TODO: Clockインタフェース型のClockフィールドを定義
+	Clock Clock
 
 	events []*Event
 }
@@ -22,6 +23,7 @@ type Calendar struct {
 func NewCalendar() *Calendar {
 	return &Calendar{
 		// TODO: ClockフィールドにDefaultClockを設定する
+		Clock: DefaultClock,
 	}
 }
 

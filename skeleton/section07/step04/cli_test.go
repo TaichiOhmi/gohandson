@@ -12,7 +12,7 @@ import (
 
 var (
 	// TODO: updateフラグの値が入る変数flagUpdateを宣言する
-
+	flagUpdate bool
 )
 
 func init() {
@@ -32,7 +32,7 @@ func TestCLI_Main(t *testing.T) {
 		{"no event", "2021/11/18 10:00", "2 3", false, 0},
 		{"input one event", "2021/11/18 10:00", "1 1 Event1 20211118 10:00 1h 2 3", false, 0},
 		// TODO: 2021/11/18 10:00からの1時間のイベントと11:00からの1時間のイベントを入力し、直近のイベントを出力して終了するケースを書く
-
+		{"input two event", "2021/11/18 10:00", "1 2 Event1 20211118 10:00 1h Event2 20211118 11:00 1h 2 3", false, 0},
 		{"past event", "2021/11/18 10:00", "1 2 Event1 20211118 09:00 1h Event2 20211118 10:00 1h 2 3", false, 0},
 	}
 
@@ -72,6 +72,7 @@ func TestCLI_Main(t *testing.T) {
 
 			if flagUpdate {
 				// TODO: golden.Update関数でtestdataディレクトリ以下にstdoutの結果を変数name+".golden"という名前で保存
+				golden.Update(t, "testdata", name, &stdout)
 				t.Skip()
 			}
 

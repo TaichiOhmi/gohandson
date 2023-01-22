@@ -10,10 +10,12 @@ import (
 type CLI struct {
 	Calendar *Calendar
 	// TODO: 標準出力に対応するStdoutフィールドを定義する
+	Stdout io.Writer
 
-	Stderr   io.Writer
+	Stderr io.Writer
 
 	// TODO: 標準入力に対応するStdinフィールドを定義する
+	Stdin io.Reader
 }
 
 func (cli *CLI) Main() int {
@@ -79,7 +81,7 @@ func (cli *CLI) InputEvent() (*Event, error) {
 	if err != nil {
 		return nil, err
 	}
- 	
+
 	var hmi string
 	err = cli.input("開始時間(HH:mm)>", &hmi)
 	if err != nil {
@@ -209,7 +211,7 @@ func (cli *CLI) input(prompt string, v interface{}) error {
 }
 
 func (cli *CLI) print(args ...interface{}) error {
-	if _, err := /* fmt.Fprint関数を使って標準出力にargsを出力する */; err != nil {
+	if _, err := fmt.Fprint(cli.Stdout, args...); /* fmt.Fprint関数を使って標準出力にargsを出力する */ err != nil {
 		return err
 	}
 	return nil
