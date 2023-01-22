@@ -24,11 +24,12 @@ func Walk(root string, fn WalkFunc) error {
 		wg.Add(1)
 		go func() {
 			// TODO: deferでwg.Doneを呼ぶ
+			defer wg.Done()
 
 			err := fn(path, info, err)
 			if err != nil {
 				// TODO: エラーチャネル(errCh)にエラーを送信
-
+				errCh <- err
 			}
 		}()
 
@@ -36,7 +37,7 @@ func Walk(root string, fn WalkFunc) error {
 	})
 
 	// TODO: 以下の関数呼び出しを別のゴールーチンで起動する
-	func() {
+	go func() {
 		for err := range errCh {
 			rerr = multierr.Append(rerr, err)
 		}
@@ -44,7 +45,6 @@ func Walk(root string, fn WalkFunc) error {
 
 	wg.Wait()
 	// TODO: errChをクローズする
-
-
+	close(errCh)
 	return rerr
 }
