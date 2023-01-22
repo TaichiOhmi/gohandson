@@ -7,17 +7,22 @@ import (
 )
 
 // TODO: string型をベースにしてsuit型を定義する
+// ユーザ定義型
+type suit string
 
 const (
 	suitHeart   suit = "♥"
 	suitClub    suit = "♣"
 	suitDiamond suit = "◆"
 	// TODO: ♠を表す定数suitSpadeを定義する
+	// 名前付き定数
+	suitSpade suit = "♠"
 )
 
 type card struct {
-	suit   suit
+	suit suit
 	// TODO: int型のnumberフィールドを定義する
+	number int
 }
 
 func main() {
@@ -28,13 +33,18 @@ func main() {
 		suitDiamond,
 		suitSpade,
 	}
+	// fmt.Println(suits)
+	// [♥ ♣ ◆ ♠]
 
 	// 山札を作る
-	all := make([]card, 0, 13*4)
-	for _, s := range suits {
-		for n := 2; n <= 14; n++ {
+	all := make([]card, 0, 13*4) // 長さが0で、容量は13*4の52枚
+	for _, s := range suits {    // ハート、クラブ、ダイヤ、スペードの４種類を一番外でループ。
+		for n := 2; n <= 14; n++ { // 2~14までの数字をループ
 			all = append(all, card{
+				// 各suitsにおいて、2~14の数値がallに追加される。
 				// TODO: マークをセットする
+				// 構造体リテラル
+				suit:   s,
 				number: n,
 			})
 		}
@@ -69,6 +79,8 @@ func main() {
 			fmt.Println("A")
 		default:
 			// TODO: 番号を改行ありで出力する
+			// フィールドを参照している。
+			fmt.Println(c.number)
 		}
 	}
 }
