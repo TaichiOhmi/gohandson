@@ -36,9 +36,11 @@ func TestWalk(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			// TODO: diffという名前のsync.Map型の変数を宣言
+			var diff sync.Map
 
 			filepath.Walk("testdata", func(path string, info fs.FileInfo, err error) error {
 				// TODO: diffにキーがpathで値struct{}{}をストアする
+				diff.Store(path, struct{}{})
 
 				return tt.fn(context.Background(), path, info, err)
 			})
@@ -54,8 +56,11 @@ func TestWalk(t *testing.T) {
 
 			// TODO: diffマップに要素がある場合はRangeメソッドで要素を回ってエラーを出す
 			// ヒント：unexpectedPathsの処理を参考にする
+			diff.Range(func(path, _ interface{}) bool {
+				t.Errorf("does not walk to %v", path)
+				return true
+			})
 
-			
 			unexpectedPaths.Range(func(path, _ interface{}) bool {
 				t.Errorf("walked to unexpected path: %v", path)
 				return true
