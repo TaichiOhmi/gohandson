@@ -3,11 +3,11 @@ package eventwatcher
 import (
 	"context"
 	"database/sql"
+	"github.com/tenntenn/sqlite"
 	"net/http"
 	"time"
 
 	"github.com/tenntenn/connpass"
-	"github.com/tenntenn/sqlite"
 )
 
 type Condition struct {
@@ -26,7 +26,7 @@ type EventWatcher struct {
 func New(addr string) (*EventWatcher, error) {
 	mux := http.NewServeMux()
 	// TODO: ドライバ名にsqlite.DriverName、接続文字列に"eventwatcher.db"を指定してデータベースを開く
-
+	db, err := sql.Open(sqlite.DriverName, "eventwatcher.db")
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +76,7 @@ func (ew *EventWatcher) Conditions(ctx context.Context, limit int) ([]*Condition
 	for rows.Next() {
 		var c Condition
 		// TODO: ID, Kind, Valueの順でレコードからスキャンする
-
+		err := rows.Scan(&c.ID, &c.Kind, &c.Value)
 		if err != nil {
 			return nil, err
 		}

@@ -8,7 +8,7 @@ import (
 
 func (ew *EventWatcher) initHandlers() {
 	// TODO: HandleIndexメソッドをパス"/"でmuxフィールドのServeMuxに登録する
-
+	ew.mux.HandleFunc("/", ew.HandleIndex)
 }
 
 func (ew *EventWatcher) HandleIndex(w http.ResponseWriter, r *http.Request) {
@@ -25,7 +25,7 @@ func (ew *EventWatcher) HandleIndex(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, e := range es {
-		if _, err := /* TODO: イベントタイトルをレスポンスとして返す */ ; err != nil {
+		if _, err := fmt.Fprintln(w, e.Title); /* TODO: イベントタイトルをレスポンスとして返す */ err != nil {
 			ew.error(w, err, http.StatusInternalServerError)
 			return
 		}

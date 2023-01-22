@@ -100,7 +100,7 @@ func (ew *EventWatcher) HandleRemove(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// TODO: ステータスをhttp.StatusFoundで"/"にリダイレクトする
-
+	http.Redirect(w, r, "/", http.StatusFound)
 }
 
 func (ew *EventWatcher) error(w http.ResponseWriter, err error, code int) {
