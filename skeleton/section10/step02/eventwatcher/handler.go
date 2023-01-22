@@ -11,9 +11,10 @@ import (
 
 var (
 	//go:embed _template/*.html
-	tmplFS /* TODO: embedパッケージのファイルシステムに対応する型 */
+	///* TODO: embedパッケージのファイルシステムに対応する型 */
+	tmplFS embed.FS
 	// TODO: tmplFSの"_template/*.html"をテンプレートとしてパースする
-
+	tmpl = template.Must(template.ParseFS(tmplFS, "_template/*.html"))
 )
 
 func (ew *EventWatcher) initHandlers() {

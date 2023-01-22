@@ -17,12 +17,13 @@ func main() {
 
 func run() error {
 	// TODO: 環境変数PORTからポート番号を取得する
+	port := os.Getenv("PORT")
 
 	if port == "" {
 		port = "8080"
 	}
 	// TODO: ホストを空、ポートを変数portとしてnet.JoinHostPort関数を呼ぶ
-
+	addr := net.JoinHostPort("", port)
 
 	ew, err := eventwatcher.New(addr)
 	if err != nil {
