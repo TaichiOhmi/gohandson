@@ -1,6 +1,6 @@
 {{define "index" -}}
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 	<head>
 		<meta charset="utf-8"/>
 		<title>connpass event watcher</title>
@@ -22,7 +22,8 @@
 		<h2>イベント</h2>
 		{{- with .Events -}}
 		<ul>
-		{{- range .}}<li><a href={{.URL}}>{{/* TODO: イベントタイトル */}}</li>{{end -}}
+
+		{{- range .}}<li><a href={{.URL}}>{{.Title}}{{/*TODO: イベントタイトル*/}}</a></li>{{end -}}
 		</ul>
 		{{- else}}
 			該当するイベントがありません

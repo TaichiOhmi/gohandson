@@ -10,7 +10,8 @@ import (
 
 var (
 	// TODO: eventwatcher/_template/*.htmlをテンプレートとしてパースする
-
+	// Mustを使うと、エラー処理を省略できる。もしエラーの場合はパニック。
+	tmpl = template.Must(template.ParseGlob("eventwatcher/_template/index.html"))
 )
 
 func (ew *EventWatcher) initHandlers() {
@@ -33,7 +34,7 @@ func (ew *EventWatcher) HandleIndex(w http.ResponseWriter, r *http.Request) {
 		Events:     es,
 	}
 
-	if err := tmpl.ExecuteTemplate(/* TODO: 結果をレスポンスとして返す */, "index", data); err != nil {
+	if err := tmpl.ExecuteTemplate(w /* TODO: 結果をレスポンスとして返す */, "index", data); err != nil {
 		ew.error(w, err, http.StatusInternalServerError)
 		return
 	}
