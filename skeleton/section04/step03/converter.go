@@ -21,6 +21,16 @@ func celsiusToFahrenheit() converter {
 
 // TODO: 華氏[°F] -> 摂氏[°C]を行う変換器を作成する関数を定義
 // 関数名：fahrenheitToCelsius
+func fahrenheitToCelsius() converter {
+	return converter{
+		name: "華氏[°F] -> 摂氏[°C]",
+		calc: func(v float64) float64 {
+			return (v - 32) / 1.8
+		},
+		fromUnit: "°F",
+		toUnit:   "°C",
+	}
+}
 
 // カロリー[cal] -> ジュール[J]を行う変換器を作成
 func calToJoule() converter {
