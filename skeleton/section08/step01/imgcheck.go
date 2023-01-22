@@ -14,7 +14,7 @@ import (
 // ベースとなるエラー
 var (
 	// TODO: errors.New関数を使って"画像フォーマットが違います"というエラーを作成し、変数ErrFormatに代入する
-
+	ErrFormat = errors.New("画像フォーマットが違います")
 )
 
 // バリデーションルールを表す関数
@@ -24,7 +24,9 @@ type Rule func(img image.Image, format string) error
 func Format(format string) Rule {
 	return func(_ image.Image, _format string) error {
 		// TODO: フォーマットが一致しない場合はErrFormatを返す
-
+		if format != _format {
+			return ErrFormat
+		}
 		return nil
 	}
 }
@@ -43,7 +45,10 @@ func Validate(r io.Reader, rules ...Rule) error {
 
 	for _, rule := range rules {
 		// TODO: ruleの呼び出しでエラーが発生した場合はreturnする
-		rule(img, format)
+		err := rule(img, format)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

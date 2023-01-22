@@ -40,7 +40,8 @@ type formatRule struct {
 
 func (r *formatRule) Validate(img image.Image, format string) error {
 	if r.pattern != nil {
-		if /* TODO: パターンにマッチしない場合 */ {
+		//if FormatPattern(r.pattern) != Format(format) /* TODO: パターンにマッチしない場合 */ {
+		if !r.pattern.MatchString(format) {
 			return &ValidationError{
 				Rule: r,
 				Err:  fmt.Errorf("期待%s 実際%s: %w", r.pattern, format, ErrFormat),

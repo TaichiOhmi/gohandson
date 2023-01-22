@@ -27,7 +27,9 @@ type ValidationError struct {
 
 // TODO: errorインタフェースを実装する
 // 返す文字列はErrフィールドのErrorメソッドを呼び出して取得する
-
+func (verr *ValidationError) Error() string {
+	return verr.Err.Error()
+}
 
 // バリデーションルールを表すインタフェース
 type Rule interface {
@@ -71,6 +73,12 @@ func (r *maxSizeRule) Validate(img image.Image, _ string) error {
 
 	// TODO: 幅のチェックを行う
 	// ヒント：高さの処理とほとんど同じ
+	if r.width != nil && bounds.Dx() > *r.width {
+		err = multierr.Append(err, &ValidationError{
+			Rule: r,
+			Err:  ErrTooLarge,
+		})
+	}
 
 	return err
 }

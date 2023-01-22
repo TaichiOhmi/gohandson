@@ -24,7 +24,7 @@ func TestValidate(t *testing.T) {
 		{"format ng", "72x72.png", []imgcheck.Rule{imgcheck.Format("jpeg")}, []error{imgcheck.ErrFormat}},
 		{"height ok", "72x72.png", []imgcheck.Rule{imgcheck.MaxHeight(72)}, nil},
 		// TODO: 幅が72以下かチェックするルールが成功するパターンのテストケースを書く
-
+		{"width ok", "72x72.png", []imgcheck.Rule{imgcheck.MaxWidth(72)}, nil},
 		{"height ng", "300x300.png", []imgcheck.Rule{imgcheck.MaxHeight(72)}, []error{imgcheck.ErrTooLarge}},
 		{"width ng", "300x300.png", []imgcheck.Rule{imgcheck.MaxWidth(72)}, []error{imgcheck.ErrTooLarge}},
 	}
@@ -48,7 +48,7 @@ func TestValidate(t *testing.T) {
 
 			for i := range errs {
 				var verr *imgcheck.ValidationError
-				if /* TODO: errs[i]が*imgcheck.ValidationError型に変換できるか試す*/ ||
+				if !errors.As(errs[i], &verr) /* TODO: errs[i]が*imgcheck.ValidationError型に変換できるか試す*/ ||
 					verr.Rule != tt.rules[i] {
 					t.Errorf("期待したルールのエラーではありません: i = %d", i)
 				}
