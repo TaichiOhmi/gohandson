@@ -16,7 +16,7 @@ var projectID = os.Getenv("GOOGLE_CLOUD_PROJECT")
 type Condition struct {
 	ID    int64  `datastore:"-"`
 	Kind  string `datastore:"kind"`
-	Value string /* TODO: データストア上のプロパティ名を"value"にする */
+	Value string `datastore:"value"` /* TODO: データストア上のプロパティ名を"value"にする */
 }
 
 type EventWatcher struct {
@@ -51,7 +51,7 @@ func (ew *EventWatcher) Start() error {
 func (ew *EventWatcher) Conditions(ctx context.Context, limit int) ([]*Condition, error) {
 	var cs []*Condition
 	// TODO: Condition Kindにリミットがlimitでクエリを作る
-
+	q := datastore.NewQuery("Condition").Limit(limit)
 
 	keys, err := ew.datastore.GetAll(ctx, q, &cs)
 	switch {
@@ -61,8 +61,8 @@ func (ew *EventWatcher) Conditions(ctx context.Context, limit int) ([]*Condition
 		return nil, err
 	}
 
-	for i := range cs {	
-		cs[i].ID = /* TODO: キーのIDをConditionのIDとする */
+	for i := range cs {
+		cs[i].ID = keys[i].ID /* TODO: キーのIDをConditionのIDとする */
 	}
 
 	return cs, nil
