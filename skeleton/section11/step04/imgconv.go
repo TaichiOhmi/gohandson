@@ -132,7 +132,7 @@ func ConvertAll(ctx context.Context, root string, to, from Format) error {
 		defer trace.StartRegion(ctx, "convert").End()
 		select {
 		// TODO: すでにキャンセルされているかコンテキストのDoneチャネルから受信して確認
-
+		case <-ctx.Done():
 			// キャンセルされた
 			return ctx.Err()
 		default:

@@ -4,11 +4,10 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	imgconv "github.com/gohandson/toybox-ja/skeleton/section11/step04"
 	"os"
 	"runtime/trace"
 	"time"
-
-	imgconv "github.com/gohandson/toybox-ja/skeleton/section11/step04"
 )
 
 var (
@@ -45,7 +44,10 @@ func run() (rerr error) {
 	defer trace.Stop()
 
 	// TODO: 3秒でタイムアウトするコンテキストを生成する
-
+	//ctx := context.Background()
+	//t := 3 * time.Second
+	//ctx, cancel := context.WithTimeout(ctx, t)
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	ctx, task := trace.NewTask(ctx, "imgconv")
