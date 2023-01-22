@@ -39,13 +39,13 @@ func run() (rerr error) {
 	}()
 
 	// TODO: 出力先はファイルfとしtrace.Startを呼ぶ
-	
+	err = trace.Start(f)
 	// TODO: deferでtrace.Stopを呼ぶ
-
+	defer trace.Stop()
 
 	ctx, task := trace.NewTask(context.Background(), "imgconv")
 	// TODO: deferでtask.Endを呼ぶ
-
+	defer task.End()
 	if err := imgconv.ConvertAll(ctx, os.Args[1], flagFrom, flagTo); err != nil {
 		return err
 	}

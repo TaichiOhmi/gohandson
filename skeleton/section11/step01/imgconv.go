@@ -129,7 +129,8 @@ func ConvertAll(ctx context.Context, root string, to, from Format) error {
 
 	walkfunc := func(path string, info fs.FileInfo, err error) (rerr error) {
 		// TODO: "convert"という名前でStartRegionを呼び、deferでEndメソッドを呼ぶ。
-
+		region := trace.StartRegion(ctx, "convert")
+		defer region.End()
 
 		// エラーが発生した
 		if err != nil {
