@@ -21,17 +21,22 @@ type EventWatcher struct {
 
 func New(addr string) (*EventWatcher, error) {
 	// TODO: *http.ServeMux型の値を生成する
+	mux := http.DefaultServeMux
+	//mux := http.NewServeMux()
 
 	return &EventWatcher{
 		connpass: connpass.NewClient(),
 		mux:      mux,
-		server:   /* TODO: AddrフィールドがaddrでHandlerフィールドがmuxの*http.Server型の値を生成 */,
+		server: &http.Server{
+			Addr:    addr,
+			Handler: mux,
+		}, /* TODO: AddrフィールドがaddrでHandlerフィールドがmuxの*http.Server型の値を生成 */
 	}, nil
 }
 
 func (ew *EventWatcher) Start() error {
 	ew.initHandlers()
-	if err := /* TODO: serverフィールドのListenAndServeを呼ぶ */; err != nil && err != http.ErrServerClosed {
+	if err := ew.server.ListenAndServe(); /* TODO: serverフィールドのListenAndServeを呼ぶ */ err != nil && err != http.ErrServerClosed {
 		return err
 	}
 	return nil
